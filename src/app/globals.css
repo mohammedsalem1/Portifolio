@@ -1,0 +1,214 @@
+@import "tailwindcss";
+
+/* Theme is set by next-themes on <html data-theme="light|dark">. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Identity: "the drawing and the blueprint".
+ * Light mode is a drafting sheet: Prussian ink on cool paper, amber used as a
+ * highlighter fill. Dark mode is the blueprint of the same drawing: chalk
+ * lines on a Prussian ground, amber used as a signal.
+ * One blue plays both roles. One accent. One radius.
+ */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --ground: #f4f6f8; /* paper */
+  --surface: #fbfcfd; /* raised sheet */
+  --ink: #0b2545; /* Prussian: text, rules */
+  --muted: #4a5d75; /* secondary text, 6.2:1 on paper */
+  --line: #c5d0dc; /* decorative hairlines only */
+  --line-strong: #0b2545; /* rules and interactive borders */
+  --signal: #ffb020; /* amber: fill only in light mode, 1.7:1 on paper */
+  --on-signal: #0b2545; /* 8.4:1 on amber */
+  --focus: #0b2545;
+  --link-rule: #0b2545; /* link underline */
+  --grid-dot: rgb(11 37 69 / 0.14);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --ground: #0b2545; /* Prussian: the blueprint */
+  --surface: #12315c;
+  --ink: #e8f0f8; /* chalk, 13.4:1 */
+  --muted: #a9bdd3; /* mist, 8:1 */
+  --line: #2b4b78;
+  --line-strong: #8ea8c7;
+  --signal: #ffb020; /* 8.4:1 on Prussian: usable as text and stroke */
+  --on-signal: #0b2545;
+  --focus: #ffb020;
+  --link-rule: #ffb020;
+  --grid-dot: rgb(232 240 248 / 0.16);
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-signal: var(--signal);
+  --color-on-signal: var(--on-signal);
+  --color-focus: var(--focus);
+
+  --font-sans: var(--font-mona), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "Cascadia Mono", monospace;
+
+  /* One corner radius for the whole site: crisp, like a drafted sheet. */
+  --radius-sheet: 2px;
+
+  /* Type scale. Display sizes are fluid; body sizes are fixed. */
+  /* Sized so "Mohammed Salem" and "Product Engineer" each hold one line,
+     from 360px phones to the 1136px desktop container. */
+  --text-display: clamp(2rem, 0.25rem + 4.6vw, 4rem);
+  --text-display--line-height: 0.98;
+  --text-title: clamp(1.875rem, 1.2rem + 2.6vw, 2.875rem);
+  --text-title--line-height: 1.08;
+  --text-heading: clamp(1.3125rem, 1.1rem + 0.8vw, 1.625rem);
+  --text-heading--line-height: 1.2;
+  --text-lede: clamp(1.125rem, 1rem + 0.5vw, 1.3125rem);
+  --text-lede--line-height: 1.5;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.65;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.55;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.4;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem; /* clears the sticky header on anchor jumps */
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.65;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--signal);
+    color: var(--on-signal);
+  }
+
+  /* One visible focus treatment everywhere. Never removed. */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: var(--radius-sheet);
+  }
+}
+
+@layer components {
+  /* Page width and side gutters. */
+  .container-page {
+    width: 100%;
+    max-width: 75rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 40rem) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* Vertical rhythm between sections. */
+  .section-y {
+    padding-block: clamp(4rem, 2.5rem + 7vw, 7.5rem);
+  }
+
+  /* Display type: Mona Sans, heavy, slightly widened. */
+  .type-display {
+    font-size: var(--text-display);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+  }
+  .type-title {
+    font-size: var(--text-title);
+    line-height: 1.08;
+    font-weight: 750;
+    font-stretch: 108%;
+    letter-spacing: -0.025em;
+  }
+  .type-heading {
+    font-size: var(--text-heading);
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  /* Mono is reserved for real identifiers: routes, module names, counts. */
+  .type-code {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    line-height: 1.4;
+    font-feature-settings: "zero" 1;
+  }
+
+  /*
+   * Inline text link. The underline carries the affordance in both themes.
+   * Light: ink underline, amber highlighter on hover.
+   * Dark: amber underline, amber text on hover.
+   */
+  .link {
+    text-decoration: underline;
+    text-decoration-color: var(--link-rule);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.22em;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease;
+  }
+  .link:hover {
+    background-color: var(--signal);
+    color: var(--on-signal);
+    text-decoration-color: transparent;
+  }
+  [data-theme="dark"] .link:hover {
+    background-color: transparent;
+    color: var(--signal);
+    text-decoration-color: var(--signal);
+  }
+
+  /* Fine dot grid. Use only inside diagram frames, never as page wallpaper. */
+  .diagram-ground {
+    background-color: var(--surface);
+    background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
