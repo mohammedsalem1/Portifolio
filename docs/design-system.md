@@ -1,116 +1,106 @@
 # Design system
 
-The site should feel like a product built by an engineer, not a resume placed
-inside a website. One identity, applied the same way everywhere.
+The site should feel like a product built by an engineer: minimal and
+editorial, with a quiet technical atmosphere and motion that explains rather
+than decorates. One identity, applied the same way in both languages and both
+themes.
 
-## Identity: the drawing and the blueprint
+## Colour
 
-| | Light: drafting sheet | Dark: blueprint |
-|---|---|---|
-| Ground | Paper `#F4F6F8` | Prussian `#0B2545` |
-| Text and rules | Prussian ink `#0B2545` | Chalk `#E8F0F8` |
-| Secondary text | Slate `#4A5D75` | Mist `#A9BDD3` |
-| Amber `#FFB020` | A highlighter: fill only, with ink on top | A signal: fill, stroke or text |
+A neutral base, one strong red accent for action and emphasis, one cool accent
+used sparingly for "live" signals. No blue ground, no gradient text. (The
+accent was amber until 2026-09-30; he chose red for a bolder look.)
 
-The two modes are the same drawing in two states, not an inversion. In light
-mode amber never appears as text or as a lone border (1.7:1 on paper). In dark
-mode it can (8.4:1 on Prussian).
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `ground` | `#F4F5F6` | `#0D0E11` | Page background |
+| `surface` | `#FCFCFD` | `#15171B` | Panels, cards |
+| `surface-2` | `#EBEDF0` | `#1C1F24` | Tags, tinted cells |
+| `ink` | `#121417` | `#ECEDEF` | Text (16.5:1 or better) |
+| `muted` | `#565D67` | `#9AA1AB` | Secondary text (6:1 or better) |
+| `line` | ink at 9% | white at 7% | Decorative hairlines only |
+| `line-strong` | `#7A818B` | `#6B727C` | Interactive borders (3.6:1 or better) |
+| `accent` | `#DC3139` | `#DC3139` | Fills, strokes and glows; white text on it is 4.6:1 |
+| `accent-ink` | `#B42229` | `#FF5A61` | The accent used as text (6:1 or better) |
+| `accent-2` | `#0B756E` | `#63C7BB` | Teal: availability, "most recent", prompts |
 
-Rules:
+- `accent` is for fills and lines (buttons, brackets, circuit traces, the
+  caret). Red text always uses `accent-ink`, which is lighter in dark mode and
+  deeper in light mode.
+- The primary button, the contact card and the WhatsApp buttons carry a soft
+  glow; in dark mode so do the surname and the numbers in the hero. In the Technical Arsenal, each technology card glows in its own
+  icon colour on hover; that is the only other glow.
+- Technology icons: brand marks from Simple Icons (CC0), kept as path data in
+  `src/components/icons/brand-paths.ts`; Phosphor (fill weight) where no mark
+  exists (Excel, AWS, KoboToolbox, ODK) and for concepts (REST, SQL, CI/CD).
+  Each card sets `--brand-light` and `--brand-dark`, since many brand colours
+  vanish on one of the two grounds (black marks in dark, yellow in light).
 
-- One accent (amber). No second accent, no gradients, no glows, no shadows.
-- One radius: `rounded-sheet` (2px) on buttons, tags, frames and focus rings.
-- Depth comes from `bg-surface` plus a rule, never from a drop shadow.
-- The dot grid (`.diagram-ground`) appears only inside diagram frames.
+## Background
 
-## Tokens
-
-Defined in `src/app/globals.css`. Use the Tailwind names, never raw hex.
-
-| Token | Tailwind | Use |
-|---|---|---|
-| `--ground` | `bg-ground` | Page background |
-| `--surface` | `bg-surface` | Raised sheet, diagram frames |
-| `--ink` | `text-ink`, `bg-ink` | Body text, headings |
-| `--muted` | `text-muted` | Secondary text |
-| `--line` | `border-line` | Decorative hairlines only |
-| `--line-strong` | `border-line-strong` | Rules, interactive borders |
-| `--signal` | `bg-signal` | Primary action, active pipeline stage |
-| `--on-signal` | `text-on-signal` | Text on amber |
-| `--focus` | (automatic) | Focus outline |
-
-Do not use Tailwind's `dark:` color overrides for anything a token already
-covers. Reach for `dark:` only for a behavioural difference between the modes.
+`.backdrop` (fixed, behind everything): a 56px grid that fades out from the
+top, and two slow radial glows (red and teal). Transform-only drift, paused
+with reduced motion. Never interactive, never over content.
 
 ## Type
 
-Mona Sans for everything. JetBrains Mono only for real identifiers: routes,
-module names, file names, counts. Never mono for decoration.
+| Language | Face | Notes |
+|---|---|---|
+| English | Mona Sans (variable width) | Display 800, tight tracking |
+| Arabic | IBM Plex Sans Arabic | Its Latin companion sets NestJS, PostgreSQL etc. No tracking, more line height |
+| Code | JetBrains Mono | Real identifiers only: commands, routes, module names, dates in the timeline |
 
-| Class | Use |
-|---|---|
-| `.type-display` | Hero headline only |
-| `.type-title` | Section titles (h2) and case-study h1 |
-| `.type-heading` | h3 inside sections |
-| `text-lede` | One intro sentence under a title |
-| `text-body` | Default body |
-| `text-small` | Metadata, sources, captions |
-| `.type-code` | Identifiers, in mono |
-
-Body line length stays under about 68 characters (`max-w-[42rem]`).
+Classes: `.type-display` (hero only), `.type-title` (section and page titles),
+`.type-heading`, `text-lede`, `text-body`, `text-small`, `.type-code`.
 
 ## Layout
 
-- `.container-page`: 75rem max width, 1.25rem gutter, 2rem from 640px.
-- `.section-y`: vertical padding between sections.
-- Each section uses `<Section id title lede>` from `src/components/ui/section.tsx`.
-- Every multi-column layout collapses to one column below 768px.
-- Hero uses `min-h-[100dvh]` logic carefully: never `h-screen`.
-
-Each home section has its own layout family. Do not repeat one:
-
-| Section | Layout |
-|---|---|
-| Hero | Asymmetric split: identity left, pipeline schematic right |
-| About | Large statement text, then a three-row fact list |
-| Featured projects | Two full-width sheets, each composed differently |
-| More projects | Two rows separated by one rule |
-| Process | A numbered line of eight steps (it is a real sequence) |
-| Experience | Timeline rows: period column, then content |
-| Skills | Definition list: group, technologies, where to see them |
-| Contact | One large line of type and three links |
-
-## Components
-
-- `ButtonLink` (`primary`, `secondary`): 44px minimum height. One primary per view.
-- `Tag`, `TagList`: bordered, never filled.
-- `TextLink`, `SourceLine`: underlined links; "Source:" lines show where a claim comes from.
-- `PendingMark`: dashed box for content that is not confirmed yet.
-
-One label per intent across the site: "View projects" and "Contact".
+- `.container-page` (75rem), `.section-y` between sections.
+- Every section uses `<Section id index command title subtitle>`: a number,
+  a shell command in mono, a large title, a subtitle. The command is code, so
+  it stays left to right in Arabic.
+- Two radii only: `rounded-sheet` (4px, controls) and `rounded-panel` (10px,
+  panels). Nothing pill-shaped.
+- Logical properties everywhere (`ps-*`, `ms-*`, `start-*`, `border-s`), so
+  Arabic mirrors without extra CSS. Directional arrows use `.flip-rtl`.
+- LTR code inside RTL text: put `dir="ltr"` on an inline span, never on the
+  paragraph, so alignment still follows the page.
 
 ## Motion
 
-One orchestrated moment: the hero pipeline draws once on load, then rests.
-Everything else is a response to the visitor (hover, focus, opening the menu).
+All transform, opacity and a light entry blur. Everything is off under
+`prefers-reduced-motion`.
 
-- Animate `transform` and `opacity` only.
-- No infinite loops, no parallax, no scroll listeners, no cursor effects.
-- `prefers-reduced-motion: reduce` shows the final state with no animation.
+| Where | What |
+|---|---|
+| Hero | One staggered entrance (`.enter` with `--i`); the role line types itself; circuit traces draw around the portrait, one scan passes over it twice; stats count up once; the code card floats |
+| Scroll | `[data-reveal]` elements rise in as they enter the viewport (one shared IntersectionObserver) |
+| Experience | The entry crossing the middle of the screen becomes active; the progress line grows to it |
+| Navigation | The current section is marked by an accent underline |
+| Hover | Small lifts on cards, arrows that move toward where the link goes |
+| Technical Arsenal | Cards stagger in once; a filter change is a view transition (cards glide, others scale and fade, the panel resizes) |
+| Sound | Optional 8-bit ticks on hover and a coin on press (Web Audio, no files); muted from the header |
+
+No scroll listeners. The only endless motion is the slow "Focus" ticker under
+the Technical Arsenal (paused on hover), the typing role line, the floating
+code card and the availability pulses; all of it stops under reduced motion,
+where the role line shows the title and the ticker wraps instead of scrolling.
+
+The hero portrait is `public/images/profile.jpg`, faded into the page by two
+intersecting mask gradients (`.hero-photo`), so its own background never shows
+a hard edge. A cut-out PNG would need only the bottom fade.
 
 ## Accessibility
 
-- Semantic landmarks: `header`, `nav`, `main`, `footer`, one `h1` per page.
-- Every interactive element is reachable by keyboard and shows the focus outline.
-- Icon-only buttons have an accessible name.
-- Text contrast is at least 4.5:1 in both themes.
-- Touch targets are at least 44 by 44 pixels.
-- Nothing depends on hover alone.
+- Landmarks, one `h1` per page, `lang` and `dir` set per locale, `hreflang` alternates.
+- Visible focus everywhere. Icon-only controls have names.
+- Tabs pattern for the pipeline (arrow keys follow reading direction).
+- Native `<dialog>` for the mobile menu (focus trap, Escape, focus return).
+- Contrast at least 4.5:1 for text in both themes.
 
 ## Copy
 
-- Plain, specific, first person in About and case studies.
-- Verbs over adjectives: built, designed, wrote, merged.
-- No em dashes or en dashes anywhere in visible text. Use a period, a comma or "to".
-- No uppercase tracked-out labels above headings. No decorative dots. No scroll cues.
-- Every claim traces to a source in `src/content`. Unconfirmed items are `pending`.
+- Plain, specific, first person. Verbs over adjectives.
+- No em or en dashes.
+- Every claim traces to `src/content`. Unconfirmed items are `pending` and show
+  a "To be confirmed" marker.

@@ -1,6 +1,6 @@
 import Link from "next/link";
+import type { RSource } from "@/content/types";
 import { cn, isExternal } from "@/lib/cn";
-import type { Source } from "@/content/types";
 
 /** Inline text link. External links open in a new tab. */
 export function TextLink({
@@ -39,20 +39,23 @@ export function TextLink({
  */
 export function SourceLine({
   sources,
+  label,
   className,
 }: {
-  sources: Source[];
+  sources: RSource[];
+  /** "Source:" in the page language. */
+  label: string;
   className?: string;
 }) {
   const linked = sources.filter(
-    (source): source is Source & { href: string } => Boolean(source.href),
+    (source): source is RSource & { href: string } => Boolean(source.href),
   );
   if (linked.length === 0) return null;
   return (
     <p className={cn("text-small text-muted", className)}>
-      <span>Source: </span>
+      <span>{label} </span>
       {linked.map((source, index) => (
-        <span key={source.label}>
+        <span key={source.href + source.label}>
           {index > 0 ? ", " : null}
           <TextLink href={source.href}>{source.label}</TextLink>
         </span>

@@ -1,143 +1,115 @@
-import type { PipelineStage, Principle, WorkflowStep } from "./types";
+import type { Principle, WorkflowStep } from "./types";
 
-const SKILL_SWAP_REPO = "https://github.com/mohammedsalem1/Skill-Swap-platform";
-const QUIZORA_AI_LOG =
-  "https://github.com/mohammedsalem1/Quizora/blob/master/AI_USAGE.md";
+const QUIZORA_AI_LOG = "https://github.com/mohammedsalem1/Quizora/blob/master/AI_USAGE.md";
 
-/**
- * The hero visualization. Five stages, each showing a real artefact from a
- * real project rather than a generic label.
- */
-export const pipeline: PipelineStage[] = [
-  {
-    id: "idea",
-    label: "Idea",
-    heading: "Start from the product problem",
-    body: "Skill Swap began as one sentence: people trade skills instead of paying for them.",
-    artefacts: ["offer a skill", "request a swap", "meet in a session", "review each other"],
-    source: { label: "Skill Swap README", href: SKILL_SWAP_REPO },
-  },
-  {
-    id: "ai",
-    label: "AI",
-    heading: "Use AI to explore, keep the decisions",
-    body: "On Quizora, Claude Code laid out options with their trade-offs. I chose, approved each phase and merged every pull request.",
-    artefacts: ["16 phases", "approval after each", "every change by pull request"],
-    source: { label: "Quizora AI usage log", href: QUIZORA_AI_LOG },
-  },
-  {
-    id: "architecture",
-    label: "Architecture",
-    heading: "Shape the system before the code",
-    body: "Skill Swap is split into modules over one PostgreSQL schema of 18 models.",
-    artefacts: [
-      "auth",
-      "user",
-      "skills",
-      "swaps",
-      "session",
-      "reviews",
-      "gamification",
-      "admin",
-    ],
-    source: { label: "Skill Swap source", href: `${SKILL_SWAP_REPO}/tree/main/src/modules` },
-  },
-  {
-    id: "build",
-    label: "Build",
-    heading: "Build in small, reviewed steps",
-    body: "Feature branches, pull requests into develop, then main. Skill Swap has 164 commits and 41 pull requests.",
-    artefacts: ["/api/v1/auth", "/api/v1/skills", "/api/v1/swaps", "/api/v1/reviews"],
-    source: { label: "Skill Swap history", href: `${SKILL_SWAP_REPO}/commits/main` },
-  },
-  {
-    id: "ship",
-    label: "Ship",
-    heading: "Put it in front of people",
-    body: "NoBound Hires is in early access, with Palestine as its first market.",
-    artefacts: ["early access", "Palestine first"],
-    source: { label: "noboundhires.com", href: "https://noboundhires.com/" },
-  },
-];
-
-/** "AI is a development multiplier, not a replacement for engineering judgment." */
-export const workflowStatement =
-  "AI is a development multiplier, not a replacement for engineering judgment.";
+export const workflowStatement = {
+  en: "AI is a development multiplier, not a replacement for engineering judgment.",
+  ar: "الذكاء الاصطناعي يضاعف سرعة التطوير، لكنه لا يحل محل الحكم الهندسي.",
+};
 
 export const workflow: WorkflowStep[] = [
   {
-    name: "Problem",
-    body: "Write down who it is for and what must be true when it works. On Quizora that was a written brief in 16 phases.",
+    name: { en: "Problem", ar: "المشكلة" },
+    body: {
+      en: "Write down who it is for and what must be true when it works. On Quizora that was a written brief in 16 phases.",
+      ar: "أكتب لمن هو المنتج وما الذي يجب أن يتحقق عندما يعمل. في Quizora كان ذلك وثيقة متطلبات من 16 مرحلة.",
+    },
     aiAssisted: false,
   },
   {
-    name: "Research",
-    body: "Read what already exists: the requirements, the data and the constraints.",
+    name: { en: "Research", ar: "البحث" },
+    body: {
+      en: "Read what already exists: the requirements, the data and the constraints.",
+      ar: "أقرأ ما هو موجود: المتطلبات والبيانات والقيود.",
+    },
     aiAssisted: false,
   },
   {
-    name: "AI-assisted exploration",
-    body: "Claude Code lays out options with their trade-offs. I choose between them.",
+    name: { en: "AI-assisted exploration", ar: "الاستكشاف بمساعدة الذكاء الاصطناعي" },
+    body: {
+      en: "Claude Code lays out options with their trade-offs. I choose between them.",
+      ar: "يعرض Claude Code البدائل ومزايا كل منها وعيوبه، وأنا أختار بينها.",
+    },
     aiAssisted: true,
   },
   {
-    name: "Architecture",
-    body: "Settle the data model and the rules first. On Quizora the data model was reviewed and approved before implementation.",
+    name: { en: "Architecture", ar: "البنية" },
+    body: {
+      en: "Settle the data model and the rules first. On Quizora the data model was reviewed and approved before implementation.",
+      ar: "أحسم نموذج البيانات والقواعد أولًا. في Quizora رُوجع نموذج البيانات واعتُمد قبل التنفيذ.",
+    },
     aiAssisted: false,
   },
   {
-    name: "Implementation",
-    body: "Small commits, one phase at a time. Every change arrives as a pull request that I read before merging.",
+    name: { en: "Implementation", ar: "التنفيذ" },
+    body: {
+      en: "Small commits, one phase at a time. Every change arrives as a pull request that I read before merging.",
+      ar: "تغييرات صغيرة، مرحلة بعد مرحلة. كل تغيير يصل كطلب سحب أقرؤه قبل دمجه.",
+    },
     aiAssisted: true,
   },
   {
-    name: "Testing",
-    body: "Tests are written with the code, then protections are broken on purpose to prove the tests can fail.",
+    name: { en: "Testing", ar: "الاختبار" },
+    body: {
+      en: "Tests are written with the code, then protections are broken on purpose to prove the tests can fail.",
+      ar: "تُكتب الاختبارات مع الكود، ثم تُكسر الحمايات عمدًا للتأكد من أن الاختبارات قادرة على الفشل.",
+    },
     aiAssisted: true,
   },
   {
-    name: "Iteration",
-    body: "Each phase ends with a report and an approval before the next one begins.",
+    name: { en: "Iteration", ar: "التكرار" },
+    body: {
+      en: "Each phase ends with a report and an approval before the next one begins.",
+      ar: "تنتهي كل مرحلة بتقرير وموافقة قبل أن تبدأ التالية.",
+    },
     aiAssisted: false,
   },
   {
-    name: "Deployment",
-    body: "Skill Swap's API went to Render. NoBound Hires is in early access.",
+    name: { en: "Deployment", ar: "النشر" },
+    body: {
+      en: "Skill Swap's API went to Render. NoBound Hires is in early access.",
+      ar: "نُشر الـ API الخاص بـ Skill Swap على Render، و NoBound Hires في مرحلة الوصول المبكر.",
+    },
     aiAssisted: false,
   },
 ];
 
 export const workflowSource = {
-  label: "Quizora AI usage log",
+  label: { en: "Quizora AI usage log", ar: "سجل استخدام الذكاء الاصطناعي في Quizora" },
   href: QUIZORA_AI_LOG,
 };
 
-export const automationNote =
-  "Automation: I completed Gaza Sky Geeks' n8n training in June 2026 and built small workflows there, such as a form that routes orders by amount and sends the right email.";
+export const automationNote = {
+  en: "Automation: I completed Gaza Sky Geeks' n8n training in June 2026 and built small workflows there, such as a form that routes orders by amount and sends the right email.",
+  ar: "الأتمتة: أتممت تدريب n8n من Gaza Sky Geeks في يونيو 2026، وبنيت خلاله سير عمل صغيرة، مثل نموذج يوجّه الطلبات حسب قيمتها ويرسل البريد المناسب.",
+};
 
 export const principles: Principle[] = [
   {
-    title: "Understand the problem",
-    body: "Who is it for, and what has to be true when it works.",
+    title: { en: "Understand the problem", ar: "افهم المشكلة" },
+    body: { en: "Who is it for, and what has to be true when it works.", ar: "لمن هو، وما الذي يجب أن يتحقق عندما يعمل." },
   },
   {
-    title: "Design the solution",
-    body: "Data model and rules before endpoints and screens.",
+    title: { en: "Design the solution", ar: "صمّم الحل" },
+    body: { en: "Data model and rules before endpoints and screens.", ar: "نموذج البيانات والقواعد قبل نقاط الـ API والواجهات." },
   },
   {
-    title: "Build deliberately",
-    body: "Small changes, each one reviewed.",
+    title: { en: "Build deliberately", ar: "ابنِ بتأنٍّ" },
+    body: { en: "Small changes, each one reviewed.", ar: "تغييرات صغيرة، يُراجَع كل منها." },
   },
   {
-    title: "Use AI intelligently",
-    body: "Let it propose and draft. Keep the decisions.",
+    title: { en: "Use AI intelligently", ar: "استخدم الذكاء الاصطناعي بذكاء" },
+    body: { en: "Let it propose and draft. Keep the decisions.", ar: "دعه يقترح ويكتب المسودة، واحتفظ بالقرار." },
   },
   {
-    title: "Test what matters",
-    body: "Cover the rules the product depends on, and check the tests can fail.",
+    title: { en: "Test what matters", ar: "اختبر ما يهم" },
+    body: {
+      en: "Cover the rules the product depends on, and check the tests can fail.",
+      ar: "غطِّ القواعد التي يعتمد عليها المنتج، وتأكد أن الاختبارات قادرة على الفشل.",
+    },
   },
   {
-    title: "Ship and iterate",
-    body: "Put it in front of people, then improve it.",
+    title: { en: "Ship and iterate", ar: "أطلق وحسّن" },
+    body: { en: "Put it in front of people, then improve it.", ar: "ضعه بين أيدي الناس، ثم حسّنه." },
   },
 ];

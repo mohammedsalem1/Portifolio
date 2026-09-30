@@ -1,47 +1,52 @@
-import { PendingMark } from "@/components/ui/pending";
+import { CertificateIcon, GraduationCapIcon } from "@phosphor-icons/react/dist/ssr";
 import { Section } from "@/components/ui/section";
-import { experience, training } from "@/content/experience";
+import { getContent } from "@/content";
+import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
+import { Timeline } from "./timeline";
 
-const row =
-  "grid gap-x-10 gap-y-2 border-b border-line py-7 md:grid-cols-[11rem_minmax(0,1fr)]";
-const period = "text-small text-muted md:pt-1";
+export function Experience({ lang }: { lang: Locale }) {
+  const t = getDictionary(lang);
+  const { experience, training } = getContent(lang);
 
-export function Experience() {
   return (
-    <Section id="experience" title="Experience">
-      <ol className="border-t border-line-strong">
-        {experience.map((item) => (
-          <li key={item.organization} className={row}>
-            <p className={period}>{item.period}</p>
-            <div className="max-w-[42rem]">
-              <h3 className="text-lede font-semibold">
-                {item.title}, {item.organization}
-              </h3>
-              {item.location ? (
-                <p className="text-small text-muted">{item.location}</p>
-              ) : null}
-              <p className="mt-2 text-body">{item.body}</p>
-              {item.status === "pending" ? (
-                <PendingMark note={item.pendingNote} className="mt-4" />
-              ) : null}
-            </div>
-          </li>
-        ))}
-      </ol>
+    <Section id="experience" {...t.sections.experience}>
+      <div className="grid gap-16 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-20">
+        <Timeline
+          items={experience}
+          labels={{ mostRecent: t.experience.mostRecent, pending: t.common.pending.replace(".", "") }}
+        />
 
-      <h3 className="type-heading mt-14 md:mt-16">Training and education</h3>
-      <ul className="mt-6 border-t border-line-strong">
-        {training.map((item) => (
-          <li key={item.title} className={row}>
-            <p className={period}>{item.period}</p>
-            <div className="max-w-[42rem]">
-              <p className="text-lede font-semibold">{item.title}</p>
-              <p className="text-small text-muted">{item.provider}</p>
-              {item.note ? <p className="mt-2 text-body">{item.note}</p> : null}
-            </div>
-          </li>
-        ))}
-      </ul>
+        <aside aria-labelledby="training-title" className="lg:pt-1">
+          <h3 id="training-title" data-reveal className="text-small font-semibold text-muted">
+            {t.experience.training}
+          </h3>
+          <ul className="mt-4 space-y-3">
+            {training.map((item, index) => {
+              const Icon = index === training.length - 1 ? GraduationCapIcon : CertificateIcon;
+              return (
+                <li
+                  key={item.title}
+                  data-reveal
+                  style={{ "--reveal-delay": `${index * 90}ms` } as React.CSSProperties}
+                  className="panel flex gap-4 p-4"
+                >
+                  <Icon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-accent-ink" />
+                  <div>
+                    <p className="font-semibold">{item.title}</p>
+                    <p className="text-small text-muted">
+                      {item.provider}
+                      <span aria-hidden="true"> · </span>
+                      {item.period}
+                    </p>
+                    {item.note ? <p className="mt-1.5 text-small">{item.note}</p> : null}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </aside>
+      </div>
     </Section>
   );
 }

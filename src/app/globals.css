@@ -2,73 +2,85 @@
 
 /* Theme is set by next-themes on <html data-theme="light|dark">. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+/* Interface sounds muted: <html data-sfx="off">, see src/lib/sfx.ts. */
+@custom-variant sfx-off (&:where([data-sfx="off"], [data-sfx="off"] *));
 
 /*
- * Identity: "the drawing and the blueprint".
- * Light mode is a drafting sheet: Prussian ink on cool paper, amber used as a
- * highlighter fill. Dark mode is the blueprint of the same drawing: chalk
- * lines on a Prussian ground, amber used as a signal.
- * One blue plays both roles. One accent. One radius.
+ * Identity: a quiet engineering workspace.
+ * Neutral graphite (dark) or neutral paper (light), one strong red accent for
+ * action and emphasis, one cool teal used sparingly for "live" signals and
+ * the ambient background. No blue ground, no gradients on text.
  */
 :root,
 [data-theme="light"] {
   color-scheme: light;
-  --ground: #f4f6f8; /* paper */
-  --surface: #fbfcfd; /* raised sheet */
-  --ink: #0b2545; /* Prussian: text, rules */
-  --muted: #4a5d75; /* secondary text, 6.2:1 on paper */
-  --line: #c5d0dc; /* decorative hairlines only */
-  --line-strong: #0b2545; /* rules and interactive borders */
-  --signal: #ffb020; /* amber: fill only in light mode, 1.7:1 on paper */
-  --on-signal: #0b2545; /* 8.4:1 on amber */
-  --focus: #0b2545;
-  --link-rule: #0b2545; /* link underline */
-  --grid-dot: rgb(11 37 69 / 0.14);
+  --ground: #f4f5f6;
+  --surface: #fcfcfd;
+  --surface-2: #ebedf0;
+  --ink: #121417; /* 16.9:1 */
+  --muted: #565d67; /* 6.1:1 */
+  --line: rgb(18 20 23 / 0.09); /* decorative hairlines */
+  --line-strong: #7a818b; /* interactive borders, 3.6:1 */
+  --accent: #dc3139; /* fills, strokes, glows */
+  --accent-ink: #b42229; /* accent as text, 6.0:1 */
+  --on-accent: #ffffff; /* 4.6:1 on accent */
+  --accent-2: #0b756e; /* teal, text-safe 5.1:1 */
+  --focus: #121417;
+  --grid: rgb(18 20 23 / 0.06);
+  --glow-a: rgb(220 49 57 / 0.12);
+  --glow-b: rgb(11 117 110 / 0.1);
+  --shadow: 0 1px 2px rgb(18 20 23 / 0.04), 0 8px 24px -12px rgb(18 20 23 / 0.12);
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --ground: #0b2545; /* Prussian: the blueprint */
-  --surface: #12315c;
-  --ink: #e8f0f8; /* chalk, 13.4:1 */
-  --muted: #a9bdd3; /* mist, 8:1 */
-  --line: #2b4b78;
-  --line-strong: #8ea8c7;
-  --signal: #ffb020; /* 8.4:1 on Prussian: usable as text and stroke */
-  --on-signal: #0b2545;
-  --focus: #ffb020;
-  --link-rule: #ffb020;
-  --grid-dot: rgb(232 240 248 / 0.16);
+  --ground: #0d0e11;
+  --surface: #15171b;
+  --surface-2: #1c1f24;
+  --ink: #ecedef; /* 16.5:1 */
+  --muted: #9aa1ab; /* 7.4:1 */
+  --line: rgb(255 255 255 / 0.07);
+  --line-strong: #6b727c; /* 3.9:1 */
+  --accent: #dc3139; /* fills, strokes, glows */
+  --accent-ink: #ff5a61; /* accent as text, 6.3:1 */
+  --on-accent: #ffffff; /* 4.6:1 on accent */
+  --accent-2: #63c7bb; /* 9.6:1 */
+  --focus: #ff5a61;
+  --grid: rgb(255 255 255 / 0.035);
+  --glow-a: rgb(220 49 57 / 0.1);
+  --glow-b: rgb(99 199 187 / 0.07);
+  --shadow: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 12px 32px -16px rgb(0 0 0 / 0.6);
 }
 
 @theme inline {
   --color-ground: var(--ground);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
-  --color-signal: var(--signal);
-  --color-on-signal: var(--on-signal);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+  --color-accent-2: var(--accent-2);
   --color-focus: var(--focus);
 
   --font-sans: var(--font-mona), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "Cascadia Mono", monospace;
 
-  /* One corner radius for the whole site: crisp, like a drafted sheet. */
-  --radius-sheet: 2px;
+  /* One small radius for controls, one for panels. Never pill-shaped. */
+  --radius-sheet: 4px;
+  --radius-panel: 10px;
 
-  /* Type scale. Display sizes are fluid; body sizes are fixed. */
-  /* Sized so "Mohammed Salem" and "Product Engineer" each hold one line,
-     from 360px phones to the 1136px desktop container. */
   --text-display: clamp(2rem, 0.25rem + 4.6vw, 4rem);
-  --text-display--line-height: 0.98;
-  --text-title: clamp(1.875rem, 1.2rem + 2.6vw, 2.875rem);
-  --text-title--line-height: 1.08;
+  --text-display--line-height: 1;
+  --text-title: clamp(2rem, 1.2rem + 2.9vw, 3.25rem);
+  --text-title--line-height: 1.05;
   --text-heading: clamp(1.3125rem, 1.1rem + 0.8vw, 1.625rem);
   --text-heading--line-height: 1.2;
   --text-lede: clamp(1.125rem, 1rem + 0.5vw, 1.3125rem);
-  --text-lede--line-height: 1.5;
+  --text-lede--line-height: 1.55;
   --text-body: 1.0625rem;
   --text-body--line-height: 1.65;
   --text-small: 0.9375rem;
@@ -77,6 +89,7 @@
   --text-label--line-height: 1.4;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @layer base {
@@ -96,6 +109,14 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* Arabic: IBM Plex Sans Arabic, whose Latin companion (IBM Plex Sans) also
+     sets the Latin runs such as NestJS or PostgreSQL, so mixed lines read as
+     one voice. Connected script needs no tracking and more line height. */
+  [dir="rtl"] body {
+    font-family: var(--font-arabic), var(--font-mona), ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.8;
+  }
+
   h1,
   h2,
   h3 {
@@ -107,11 +128,10 @@
   }
 
   ::selection {
-    background: var(--signal);
-    color: var(--on-signal);
+    background: var(--accent);
+    color: var(--on-accent);
   }
 
-  /* One visible focus treatment everywhere. Never removed. */
   :focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 3px;
@@ -120,7 +140,6 @@
 }
 
 @layer components {
-  /* Page width and side gutters. */
   .container-page {
     width: 100%;
     max-width: 75rem;
@@ -133,12 +152,10 @@
     }
   }
 
-  /* Vertical rhythm between sections. */
   .section-y {
-    padding-block: clamp(4rem, 2.5rem + 7vw, 7.5rem);
+    padding-block: clamp(4.5rem, 3rem + 7vw, 8rem);
   }
 
-  /* Display type: Mona Sans, heavy, slightly widened. */
   .type-display {
     font-size: var(--text-display);
     line-height: 1;
@@ -147,10 +164,10 @@
   }
   .type-title {
     font-size: var(--text-title);
-    line-height: 1.08;
+    line-height: 1.05;
     font-weight: 750;
-    font-stretch: 108%;
-    letter-spacing: -0.025em;
+    font-stretch: 106%;
+    letter-spacing: -0.03em;
   }
   .type-heading {
     font-size: var(--text-heading);
@@ -158,51 +175,501 @@
     font-weight: 700;
     letter-spacing: -0.015em;
   }
+  [dir="rtl"] :is(.type-display, .type-title, .type-heading) {
+    letter-spacing: 0;
+    font-stretch: 100%;
+  }
+  [dir="rtl"] .type-display {
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  [dir="rtl"] .type-title {
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  [dir="rtl"] .type-heading {
+    line-height: 1.45;
+  }
 
-  /* Mono is reserved for real identifiers: routes, module names, counts. */
+  /* Mono is for real identifiers only: routes, module names, commands. */
   .type-code {
     font-family: var(--font-mono);
     font-size: var(--text-label);
     line-height: 1.4;
     font-feature-settings: "zero" 1;
+    letter-spacing: 0;
+  }
+  /* Arabic words inside mono labels (dates) use the Arabic face, not a
+     system fallback. */
+  [dir="rtl"] .type-code {
+    font-family: var(--font-jetbrains), var(--font-arabic), ui-monospace, monospace;
   }
 
   /*
    * Inline text link. The underline carries the affordance in both themes.
-   * Light: ink underline, amber highlighter on hover.
-   * Dark: amber underline, amber text on hover.
+   * Hover draws an accent underline; in light mode the text darkens to ink.
    */
   .link {
     text-decoration: underline;
-    text-decoration-color: var(--link-rule);
-    text-decoration-thickness: 1.5px;
-    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
     transition:
-      background-color 160ms ease,
-      color 160ms ease;
+      text-decoration-color 180ms ease,
+      color 180ms ease;
   }
   .link:hover {
-    background-color: var(--signal);
-    color: var(--on-signal);
-    text-decoration-color: transparent;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
   }
   [data-theme="dark"] .link:hover {
-    background-color: transparent;
-    color: var(--signal);
-    text-decoration-color: var(--signal);
+    color: var(--accent-ink);
   }
 
-  /* Fine dot grid. Use only inside diagram frames, never as page wallpaper. */
+  /* Fine dot grid. Only inside diagram frames. */
   .diagram-ground {
     background-color: var(--surface);
-    background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+    background-image: radial-gradient(var(--grid) 1.2px, transparent 1.2px);
     background-size: 16px 16px;
+  }
+
+  /* A raised panel: subtle border, soft shadow, no glow. */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-panel);
+    box-shadow: var(--shadow);
+  }
+
+  /* Arrows point the way you read. */
+  [dir="rtl"] .flip-rtl {
+    transform: scaleX(-1);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Hero: the name set very large, a typed role line, and the portrait with a
+   light HUD (corner brackets, circuit traces, one scan). The portrait fades
+   into the page instead of sitting in a box.
+--------------------------------------------------------------------------- */
+.type-hero-name {
+  font-size: clamp(3.25rem, 1.2rem + 6.4vw, 6.25rem);
+  line-height: 0.92;
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -0.045em;
+}
+[dir="rtl"] .type-hero-name {
+  font-size: clamp(3rem, 1rem + 7vw, 6rem);
+  line-height: 1.2;
+  font-weight: 700;
+  font-stretch: 100%;
+  letter-spacing: 0;
+}
+.hero-last {
+  color: var(--accent-ink);
+}
+[data-theme="dark"] .hero-last {
+  text-shadow: 0 0 48px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.typewriter-caret {
+  display: inline-block;
+  width: 0.55ch;
+  height: 1.05em;
+  margin-inline-start: 0.2ch;
+  vertical-align: -0.15em;
+  background: var(--accent);
+  animation: caret 1.05s steps(1) infinite;
+}
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Two fades multiplied together: in from both sides, and in from the top
+   and bottom, so no edge of the photo's own frame is ever visible. */
+.hero-photo {
+  mask-image:
+    linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 10%, black 64%, transparent 95%);
+  mask-composite: intersect;
+}
+/* A cut-out has no frame to hide: only its base fades into the page. */
+.hero-photo--cutout {
+  mask-image: linear-gradient(to bottom, black 72%, transparent 97%);
+  mask-composite: add;
+}
+/* Crisp, not tinted: a little contrast so the face carries at this size. */
+.hero-photo img {
+  filter: contrast(1.05) saturate(1.03);
+}
+[data-theme="dark"] .hero-photo img {
+  filter: contrast(1.1) saturate(1.05) brightness(0.97);
+}
+/* Darkens the room around him, never the face, and settles the base into
+   the page, so the subject stands out the way a cut-out would. */
+.hero-vignette {
+  background:
+    linear-gradient(to top, var(--ground) 0%, transparent 30%),
+    radial-gradient(
+      ellipse 46% 50% at 50% 34%,
+      transparent 42%,
+      color-mix(in srgb, var(--ground) 72%, transparent) 100%
+    );
+}
+.hero-halo {
+  background: radial-gradient(
+    closest-side at 50% 58%,
+    color-mix(in srgb, var(--accent) 24%, transparent),
+    transparent
+  );
+}
+
+.hero-circuit path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.75;
+}
+.hero-circuit circle {
+  fill: var(--accent);
+}
+
+/* Corner brackets drawn with gradients, over a faint dashed outline. */
+.hud-frame {
+  --hud: color-mix(in srgb, var(--accent) 75%, transparent);
+  --hud-len: 16px;
+  --hud-w: 1.5px;
+  background:
+    linear-gradient(var(--hud), var(--hud)) top left / var(--hud-len) var(--hud-w),
+    linear-gradient(var(--hud), var(--hud)) top left / var(--hud-w) var(--hud-len),
+    linear-gradient(var(--hud), var(--hud)) top right / var(--hud-len) var(--hud-w),
+    linear-gradient(var(--hud), var(--hud)) top right / var(--hud-w) var(--hud-len),
+    linear-gradient(var(--hud), var(--hud)) bottom left / var(--hud-len) var(--hud-w),
+    linear-gradient(var(--hud), var(--hud)) bottom left / var(--hud-w) var(--hud-len),
+    linear-gradient(var(--hud), var(--hud)) bottom right / var(--hud-len) var(--hud-w),
+    linear-gradient(var(--hud), var(--hud)) bottom right / var(--hud-w) var(--hud-len);
+  background-repeat: no-repeat;
+}
+.hero-stat {
+  border: 1px dashed color-mix(in srgb, var(--accent) 22%, transparent);
+  background-color: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(6px);
+}
+.hero-stat:hover {
+  --hud: var(--accent);
+  background-color: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+[data-theme="dark"] .hero-stat-value {
+  text-shadow: 0 0 28px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.binary-field {
+  opacity: 0.14;
+  mask-image: radial-gradient(ellipse 70% 60% at 60% 60%, black 20%, transparent 75%);
+  user-select: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Technical Arsenal: technology cards. Each card carries its icon colour for
+   both themes (--brand-light, --brand-dark); everything else derives from it,
+   so a card glows in its own technology's colour on hover.
+--------------------------------------------------------------------------- */
+.tech-card {
+  --brand: var(--brand-light);
+}
+[data-theme="dark"] .tech-card {
+  --brand: var(--brand-dark);
+}
+/* A soft wash of the brand colour from the icon corner, shown on hover. */
+.tech-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 90% at 0% 0%,
+    color-mix(in srgb, var(--brand) 12%, transparent),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+[dir="rtl"] .tech-card::before {
+  background: radial-gradient(
+    120% 90% at 100% 0%,
+    color-mix(in srgb, var(--brand) 12%, transparent),
+    transparent 60%
+  );
+}
+.tech-card:hover {
+  border-color: color-mix(in srgb, var(--brand) 45%, var(--line));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--brand) 14%, transparent),
+    0 18px 36px -24px var(--brand);
+}
+.tech-card:hover::before {
+  opacity: 1;
+}
+.tech-well {
+  color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 10%, transparent);
+  border-color: color-mix(in srgb, var(--brand) 22%, transparent);
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+.tech-well > svg {
+  transition:
+    scale 400ms var(--ease-spring),
+    rotate 400ms var(--ease-spring);
+}
+.tech-card:hover .tech-well {
+  background: color-mix(in srgb, var(--brand) 16%, transparent);
+  border-color: color-mix(in srgb, var(--brand) 45%, transparent);
+  box-shadow: 0 0 20px -6px color-mix(in srgb, var(--brand) 70%, transparent);
+}
+.tech-card:hover .tech-well > svg {
+  scale: 1.14;
+  rotate: -8deg;
+}
+.tech-badge {
+  color: var(--muted);
+  border-color: var(--line);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  transition:
+    color 300ms ease,
+    border-color 300ms ease;
+}
+.tech-card:hover .tech-badge {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--brand) 35%, var(--line));
+}
+
+/* Focus strip under the grid: a slow ticker with soft edges. */
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes marquee-rtl {
+  to {
+    transform: translateX(50%);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Ambient background: a faint technical grid fading out from the top, and two
+   slow glows. Fixed, behind everything, never interactive.
+--------------------------------------------------------------------------- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 75%);
+}
+.backdrop-glow {
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  will-change: transform;
+}
+.backdrop-glow-a {
+  top: -30vmax;
+  inset-inline-start: -15vmax;
+  background: radial-gradient(circle, var(--glow-a), transparent 65%);
+  animation: drift-a 26s ease-in-out infinite alternate;
+}
+.backdrop-glow-b {
+  top: 10vmax;
+  inset-inline-end: -25vmax;
+  background: radial-gradient(circle, var(--glow-b), transparent 65%);
+  animation: drift-b 32s ease-in-out infinite alternate;
+}
+@keyframes drift-a {
+  to {
+    transform: translate3d(8vmax, 6vmax, 0) scale(1.08);
+  }
+}
+@keyframes drift-b {
+  to {
+    transform: translate3d(-6vmax, 10vmax, 0) scale(0.94);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion. Everything here is opacity and transform (plus a light blur on
+   entry). With reduced motion none of it applies and content is simply there.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  /* Hero entrance: one orchestrated sequence on load. */
+  .enter {
+    animation: rise 900ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 110ms + 80ms);
+  }
+
+  /* Scroll reveals. Hidden only once JavaScript has marked the page, so the
+     content is never lost without it. */
+  [data-js] [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(4px);
+  }
+  [data-js] [data-reveal] {
+    transition:
+      opacity 750ms var(--ease-out-expo),
+      transform 750ms var(--ease-out-expo),
+      filter 750ms var(--ease-out-expo);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  /* Hero: traces draw in, nodes light up, one scan passes over the
+     portrait, and the code card floats. */
+  .hero-circuit path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: trace 1.1s var(--ease-out-expo) var(--d, 0ms) forwards;
+  }
+  .hero-circuit circle {
+    opacity: 0;
+    animation: node 500ms ease-out var(--d, 0ms) forwards;
+  }
+  .hero-scan {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, var(--accent-2) 12%, transparent) 48%,
+      color-mix(in srgb, var(--accent-2) 32%, transparent) 50%,
+      transparent 52%
+    );
+    transform: translateY(-100%);
+    animation: scan 3.2s ease-in-out 1.4s 2 forwards;
+  }
+  .code-float {
+    animation: float 7s ease-in-out infinite;
+  }
+
+  /* Technology cards arrive in a quick stagger once the panel is revealed.
+     Only the first time: after a filter change the view transition animates
+     them instead, and cards coming back from display: none must not replay. */
+  [data-js] .stack-panel[data-revealed]:not([data-filtered]) .tech-card {
+    animation: rise 700ms var(--ease-out-expo) backwards;
+    animation-delay: calc(min(var(--i), 16) * 35ms + 120ms);
+  }
+
+  .marquee-track {
+    animation: marquee 40s linear infinite;
+  }
+  [dir="rtl"] .marquee-track {
+    animation-name: marquee-rtl;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* Filter changes in the Technical Arsenal run as a view transition: cards
+     that stay glide to their new place, the rest scale and fade. */
+  ::view-transition-group(*) {
+    animation-duration: 460ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  ::view-transition-old(*):only-child {
+    animation: tech-out 180ms ease-in both;
+  }
+  ::view-transition-new(*):only-child {
+    animation: tech-in 420ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both;
+  }
+}
+
+@keyframes trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes node {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes scan {
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes tech-out {
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+@keyframes tech-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .marquee {
+    mask-image: none;
+  }
+  .marquee-track {
+    width: auto;
+  }
+  .marquee-track > ul:first-child {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+  .marquee-copy {
+    display: none;
+  }
+  .typewriter-caret {
+    animation: none;
+  }
+  .backdrop-glow {
+    animation: none;
   }
   *,
   *::before,
